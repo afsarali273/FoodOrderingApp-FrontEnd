@@ -1,4 +1,5 @@
 import React, {Component} from "react";
+import { Link } from "react-router-dom";
 import {withStyles} from '@material-ui/core/styles';
 import './Home.css';
 import {Grid, Row, Col} from 'react-material-responsive-grid';
@@ -11,8 +12,6 @@ import {Card, CardActionArea, CardContent, CardMedia, Typography} from "@materia
 const styles = theme => ({
     root: {
         flexGrow: 1,
-        marginTop: 30,
-        padding: 5,
     },
     media: {
         height: 200,
@@ -76,10 +75,12 @@ class Home extends Component {
                                 return (
                                     <Col sm={6} lg={3} key={obj.id} style={{marginBottom: 30}}>
                                         <Card>
+                                            <Link to={"/restaurant/" + obj.id} style={{ color: "#000000", textDecoration: "none" }}>
                                             <CardActionArea>
                                                 <CardMedia
                                                     className={classes.media}
                                                     image={obj.photo_URL}
+                                                    title={obj.restaurant_name}
                                                 />
                                                 <CardContent>
                                                     <Typography gutterBottom variant="h5" component="h5">
@@ -117,6 +118,7 @@ class Home extends Component {
 
                                                 </div>
                                             </CardActionArea>
+                                            </Link>
                                         </Card>
                                     </Col>
                                 )

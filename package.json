@@ -28,6 +28,7 @@
   ],
   "devDependencies": {
     "@material-ui/core": "^4.12.2",
-    "axios": "^0.21.1"
+    "axios": "^0.21.1",
+    "react-router-dom": "^5.2.0"
   }
 }

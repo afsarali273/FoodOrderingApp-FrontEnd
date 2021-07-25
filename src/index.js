@@ -2,15 +2,12 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import * as serviceWorker from './serviceWorker';
-import Home from "./screens/home/Home";
+import ApplicationRouter from "./ApplicationRouter";
 
 ReactDOM.render(
-    <div>
-        <div>
-            Header Goes Here !!
-        </div>
-        <Home/>
-    </div>,
+    <React.Fragment>
+        <ApplicationRouter />
+    </React.Fragment>,
     document.getElementById('root')
 );
 
