@@ -91,16 +91,18 @@ class Home extends Component {
                                                     </Typography>
                                                 </CardContent>
 
-                                                <div style={{display: "flex"}}>
+                                                {/*Rating section*/}
+                                                <div style={{display: "flex",justifyContent:"space-between"}}>
                                                     <div className={"rating"}>
                                                         <Typography style={{marginRight: 6}}>
                                                             <FontAwesomeIcon icon={faStar}
                                                                              style={{color: 'white', padding: 5}}/>
                                                         </Typography>
-                                                        <Typography style={{marginRight: 5, color: 'white'}}>
+                                                        <Typography style={{marginRight: 5, color: 'white',marginTop:5}}>
                                                             {obj.customer_rating} ({obj.number_customers_rated})
                                                         </Typography>
                                                     </div>
+                                                    {/*Price Section*/}
                                                     <div style={{display: "flex"}}>
                                                         <div className={"price"}>
                                                             <Typography>
