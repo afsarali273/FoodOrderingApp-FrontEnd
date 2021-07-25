@@ -1,0 +1,22 @@
+.details-container{
+    background-color: #eeede8;
+    width: 100%;
+    height: 350px;
+}
+
+.restaurant-info{
+    display: flex;
+    justify-content: space-between;
+    width: 50%;
+    margin: 30px;
+    padding-top: 50px;
+}
+.details{
+    flex-direction: column;
+}
+
+.categories-list{
+    display: flex;
+    list-style-type: none;
+    padding-inline-start:0px;
+}
