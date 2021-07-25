@@ -1,0 +1,44 @@
+.app-header{
+    display: flex;
+    align-items: center;
+    background-color: #253238;
+    height: auto;
+    padding: 10px;
+}
+.logo{
+    color: #fff;
+    font-size: 42px !important;
+}
+.search-icon{
+    color: #fff;
+    margin-right: 10px;
+    margin-bottom: 5px;
+    font-size: 32px !important;
+}
+.search-formControl{
+    width: 340px;
+    color: #fff;
+    margin-right: auto !important;
+    margin-left: auto !important;
+}
+.search-formControl input{
+    color: #fff !important;
+}
+.search-formControl input:hover{
+    border-bottom-color: #fff !important;
+}
+.header-btn{
+    float: right;    
+}
+.modal-tabs{
+    margin: 20px;
+}
+.dispNone{
+    display: none;
+}
+.dispBlock{
+   display: block;
+}
+.red{
+   color: red;
+}

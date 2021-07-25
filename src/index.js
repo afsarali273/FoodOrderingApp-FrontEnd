@@ -2,12 +2,13 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import * as serviceWorker from './serviceWorker';
+import Header from './common/header/Header';
 import Home from "./screens/home/Home";
 
 ReactDOM.render(
     <div>
         <div>
-            Header Goes Here !!
+           <Header/>
         </div>
         <Home/>
     </div>,
