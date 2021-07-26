@@ -4,6 +4,7 @@ import axios from "axios";
 import {Typography} from "@material-ui/core";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faRupeeSign, faStar} from "@fortawesome/free-solid-svg-icons";
+import Header from "../../common/header/Header";
 
 class Details extends Component{
 
@@ -66,7 +67,7 @@ class Details extends Component{
         return(
             <div>
                 <div>
-                    Header goes here
+                    <Header/>
                 </div>
 
                 <div className={"details-container"}>

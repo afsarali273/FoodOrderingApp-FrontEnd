@@ -8,6 +8,7 @@ import {faStar, faRupeeSign} from "@fortawesome/free-solid-svg-icons";
 import axios from 'axios'
 
 import {Card, CardActionArea, CardContent, CardMedia, Typography} from "@material-ui/core";
+import Header from "../../common/header/Header";
 
 const styles = theme => ({
     root: {
@@ -68,6 +69,7 @@ class Home extends Component {
         const {classes} = this.props;
         return (
             <div>
+                <div><Header/></div>
                 <Grid container spacing={2}>
                     <Row className={classes.columns}>
                         {
