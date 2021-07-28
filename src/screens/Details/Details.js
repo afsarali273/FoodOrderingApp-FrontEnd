@@ -6,14 +6,14 @@ import {
     Card,
     CardContent,
     Divider,
-    Grid, IconButton, Snackbar, SvgIcon,
+    Grid, IconButton, SvgIcon,
     Typography
 } from "@material-ui/core";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCircle, faRupeeSign, faShoppingCart, faStar} from "@fortawesome/free-solid-svg-icons";
 import Header from "../../common/header/Header";
 import Button from "@material-ui/core/Button";
-import {Add} from "@material-ui/icons";
+import {Add,Remove} from "@material-ui/icons";
 
 
 
@@ -301,7 +301,7 @@ class Details extends Component {
 
                             <CardContent style={{margin: 2}}>
                                 <div style={{display: "flex", padding: "10px"}}>
-                                    <Badge badgeContent={this.state.cartItems.itemList.length === 0 ? '0' : this.state.cartItems.itemList.length } color={"primary"}>
+                                    <Badge badgeContent={this.state.cartItems.itemList.length === 0 ? '0' : this.state.cartItems.totalItemCount } color={"primary"}>
 
                                         <FontAwesomeIcon icon={faShoppingCart}
                                                          style={{color: 'black'}}/>
@@ -325,38 +325,65 @@ class Details extends Component {
                                                         </div>
                                                     </Grid>
                                                     <Grid item xs>
-                                                        <div>
+                                                        <div style={{display:"flex"}}>
+                                                            <Typography >
+                                                                <SvgIcon className={"plus-btn"} >
+                                                                    <Remove/>
+                                                                </SvgIcon>
+                                                            </Typography>
+
+                                                            <Typography style={{paddingLeft:"10px",fontSize:"20px"}} variant={"caption"}>
+                                                                {itemList.quantity}
+                                                            </Typography>
+                                                            <Typography >
+                                                                <SvgIcon className={"plus-btn"} >
+                                                                    <Add/>
+                                                                </SvgIcon>
+                                                            </Typography>
+                                                        </div>
+
+                                                    </Grid>
+
+                                                    {/*Cart Unit Price section*/}
+                                                    <Grid item xs>
+                                                        <div style={{marginLeft:"30px"}}>
                                                             <Typography>
                                                                 <FontAwesomeIcon icon={faRupeeSign}
                                                                                  style={{color: 'black'}}/>
                                                             </Typography>
                                                             <Typography>
-                                                                {itemList.item.price}.00
+                                                                {itemList.item.price * itemList.quantity}.00
                                                             </Typography>
                                                         </div>
                                                     </Grid>
-                                                    <Grid item xs>
-                                                        <Typography >
-                                                            <SvgIcon className={"plus-btn"} >
-                                                                <Add/>
-                                                            </SvgIcon>
-                                                        </Typography>
-                                                    </Grid>
-
                                                 </Grid>
                                             </div>
                                         )
                                     })}
 
                                 </div>
-                                <div>
+
+                                {/*Final Price in the Cart*/}
+                                <div style={{display:"flex",justifyContent:"space-between"}}>
                                     <Typography style={{fontWeight: "bold", margin: "20px", fontSize: "medium"}}
                                                 component={"div"}>
                                         TOTAL AMOUNT
                                     </Typography>
+
+                                    <div style={{display:"flex", marginRight:"50px"}}>
+                                        <Typography>
+                                            <FontAwesomeIcon icon={faRupeeSign}
+                                                             style={{color: 'black',marginTop: "20px"}}/>
+                                        </Typography>
+                                        <Typography style={{fontWeight: "bold", margin: "20px 5px 0px 5px", fontSize: "medium"}}
+                                                    component={"div"}>
+                                            {this.state.cartItems.totalPrice}.00
+                                        </Typography>
+                                    </div>
+
                                 </div>
 
-                                <Button color={"primary"} style={{marginTop: "30px"}} fullWidth
+                                <Button color={"primary"} style={{marginLeft:"30px", width:"85%"}}
                                         variant="contained">CHECKOUT</Button>
 
                             </CardContent>
@@ -364,7 +391,6 @@ class Details extends Component {
                     </div>
 
                     {/*End of Cart Section*/}
-
 
                 </div>
 
