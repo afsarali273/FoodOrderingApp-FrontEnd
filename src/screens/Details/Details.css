@@ -23,7 +23,7 @@
 }
 
 .foodmenu-section{
-    margin: 50px;
+    margin: 40px;
     width: 40%;
     min-width: 450px;
 
@@ -53,3 +53,12 @@ p{
     display: flex;
     flex-wrap: wrap;
 }
+
+.item-name{
+    text-transform:capitalize;
+}
+
+.plus-btn:hover{
+    cursor: pointer;
+}
+
