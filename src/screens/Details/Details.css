@@ -61,4 +61,7 @@ p{
 .plus-btn:hover{
     cursor: pointer;
 }
+.plus-btn{
+    font-size: 15px;
+}
 

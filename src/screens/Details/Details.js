@@ -332,7 +332,7 @@ class Details extends Component {
                                                                 </SvgIcon>
                                                             </Typography>
 
-                                                            <Typography style={{paddingLeft:"10px",fontSize:"20px"}} variant={"caption"}>
+                                                            <Typography style={{paddingLeft:"10px",fontSize:"15px"}} variant={"caption"}>
                                                                 {itemList.quantity}
                                                             </Typography>
                                                             <Typography >
