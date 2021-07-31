@@ -16,6 +16,8 @@ import PropTypes from 'prop-types';
 import FormHelperText from '@material-ui/core/FormHelperText';
 //import { Link } from 'react-router-dom';
 import { div } from 'prelude-ls';
+import axios from 'axios'
+import {Avatar, Divider, IconButton, Menu, MenuItem} from '@material-ui/core';
 
 const customStyles = {
     content: {
@@ -55,8 +57,8 @@ class Header extends Component{
             lastname: "",
             email: "",
             passwordRegister: "",
-            contact: ""
-
+            contact: "",
+            registrationSuccess: false,
         };
     }
     openModalHandler = () => {
@@ -77,14 +79,45 @@ class Header extends Component{
     tabChangeHandler = (e, value) => {
         this.setState({value});
     }
-    buttonClickHandler = () => {
-        this.state.usercontact === "" ? this.setState({userContactRequired: "dispBlock"}) : this.setState({userContactRequired: "dispNone"})
-        this.state.password === "" ? this.setState({passwordRequired: "dispBlock"}) : this.setState({passwordRequired: "dispNone"})
+    registerButtonClickHandler = () => {
         this.state.firstname === "" ? this.setState({firstNameRequired: "dispBlock"}) : this.setState({firstNameRequired: "dispNone"})
         this.state.lastname === "" ? this.setState({lastNameRequired: "dispBlock"}) : this.setState({lastNameRequired: "dispNone"})
         this.state.email === "" ? this.setState({emailRequired: "dispBlock"}) : this.setState({emailRequired: "dispNone"})
         this.state.passwordRegister === "" ? this.setState({passwordRegisterRequired: "dispBlock"}) : this.setState({passwordRegisterRequired: "dispNone"})
         this.state.contact === "" ? this.setState({contactRequired: "dispBlock"}) : this.setState({contactRequired: "dispNone"})
+
+        let dataSignup = JSON.stringify({
+            "email": this.state.email,
+            "firstname": this.state.firstname,
+            "lastname": this.state.lastname,
+            "contact_number": this.state.contact,
+            "password": this.state.passwordRegister
+        });
+        let url = "http://localhost:8080//api/customer/signup";
+        // const headers = { 
+        //     'Authorization': 'Bearer my-token',
+        //     'My-Custom-Header': 'foobar'
+        // };
+        //axios.post(url, dataSignup, { headers })
+        axios.post(url, dataSignup).then(response => this.setState({ articleId: response.data.id }));
+    }
+    loginButtonClickHandler = () => {
+        this.state.usercontact === "" ? this.setState({userContactRequired: "dispBlock"}) : this.setState({userContactRequired: "dispNone"})
+        this.state.password === "" ? this.setState({passwordRequired: "dispBlock"}) : this.setState({passwordRequired: "dispNone"})
+
+        let $this = this;
+        let url = "http://localhost:8080/api/customer/login";
+        let requestConfig = {
+            url: url,
+            method: "get",
+            responseType: "json"
+        };
+        axios(requestConfig).then((response) => console.log(response.data));
+        // axios(requestConfig).then(function (response) {
+        //     if (response.statusText === "OK" || response.status === 200) {
+        //         $this.setState({data: response.data.restaurants, template: response.data.restaurants});
+        //     }
+        // });
     }
     inputUserContactChangeHandler = (e) => {
         this.setState({usercontact: e.target.value})
@@ -120,10 +153,38 @@ class Header extends Component{
                             <SearchIcon className="search-icon" />
                             </InputAdornment>
                             }
+                               placeholder={"Search By Restaurant Name"}
                         />
                     </FormControl>
                     <div className="header-btn">
-                    <Button variant="contained" color="default" startIcon={<AccountCircle />} onClick={this.openModalHandler} style={{marginRight: 20}}>Login</Button>
+                    {
+                    this.loggedIn === true ?
+                    <div>
+                        <Menu open={this.state.openMenu} onClose={this.menuCloseHandler}
+                          anchorEl={this.state.anchorEl} getContentAnchorEl={null}
+                          anchorOrigin={{vertical: "bottom", horizontal: "right"}} keepMounted>
+                        {
+                            this.props.showMyAccount ? // This prop would be passed from Home.js for enabling My Account option.
+                                <MenuItem onClick={this.myAccountClickHandler}>
+                                    <Typography>My Account</Typography>
+                                    <Divider variant="middle"/>
+                                </MenuItem>
+                                : null
+                        }
+                        {
+                            this.props.showMyAccount ?
+                                <Divider variant="middle"/> : null
+                        }
+                            <MenuItem
+                            onClick={this.logoutClickHandler}><Typography>Logout</Typography>
+                            </MenuItem>
+                        </Menu>
+                    </div> : 
+                    <div>
+                        <Button variant="contained" color="default" startIcon={<AccountCircle />} onClick={this.openModalHandler} style={{marginRight: 20}}>Login</Button>
+                    </div>
+                    }
+                    
                     </div>
                 </header>
                 <Modal ariaHideApp={false} isOpen={this.state.modalIsOpen} contentLabel="Login" onRequestClose={this.closeModalHandler} style={customStyles}>
@@ -143,7 +204,15 @@ class Header extends Component{
                         <Input type="password" id="password" password={this.state.password} onChange={this.inputPasswordChangeHandler}></Input>
                         <FormHelperText className={this.state.passwordRequired}><span className="red">required*</span></FormHelperText>
                     </FormControl><br/><br/>
-                    <Button variant="contained" color="primary" onClick={this.buttonClickHandler}>Login</Button>
+                    {this.state.loggedIn === true &&
+                                <FormControl>
+                                    <span className="successText">
+                                        Login Successful!
+                                    </span>
+                                </FormControl>
+                            }
+                            <br /><br />
+                    <Button variant="contained" color="primary" onClick={this.loginButtonClickHandler}>Login</Button>
                 </TabContainer>}
 
                 {this.state.value !== 0 &&
@@ -173,7 +242,15 @@ class Header extends Component{
                             <Input type="text" id="contact" contact={this.state.contact} onChange={this.contactChangeHandler}></Input>
                             <FormHelperText className={this.state.contactRequired}><span className="red">required*</span></FormHelperText>
                         </FormControl><br/><br/>
-                        <Button variant="contained" color="primary" onClick={this.buttonClickHandler}>Register</Button>
+                        {this.state.registrationSuccess === true &&
+                                <FormControl>
+                                    <span className="successText">
+                                        Registration Successful. Please Login!
+                                      </span>
+                                </FormControl>
+                            }
+                            <br /><br />
+                        <Button variant="contained" color="primary" onClick={this.registerButtonClickHandler}>Register</Button>
                     </TabContainer>}
                 </Modal>
             </div>
