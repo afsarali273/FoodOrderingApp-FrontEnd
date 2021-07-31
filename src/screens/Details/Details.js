@@ -6,7 +6,7 @@ import {
     Card,
     CardContent,
     Divider,
-    Grid, IconButton, SvgIcon,
+    Grid, IconButton, Snackbar, SvgIcon,
     Typography
 } from "@material-ui/core";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
@@ -14,6 +14,8 @@ import {faCircle, faRupeeSign, faShoppingCart, faStar} from "@fortawesome/free-s
 import Header from "../../common/header/Header";
 import Button from "@material-ui/core/Button";
 import {Add,Remove} from "@material-ui/icons";
+import {faStopCircle} from "@fortawesome/free-solid-svg-icons/faStopCircle";
+import CloseIcon from "@material-ui/icons/Close";
 
 
 
@@ -35,8 +37,6 @@ class Details extends Component {
             },
         }
     }
-
-
 
 
     componentWillMount() {
@@ -85,16 +85,82 @@ class Details extends Component {
             myCartItem.itemList.push(cartItem);
         }
 
-        console.log("new Cart items : "+JSON.stringify(myCartItem));
+        console.log("new Cart items : " + JSON.stringify(myCartItem));
         // Finally updating our myCartItem state
-        this.setState({ cartItems: myCartItem });
+        this.setState({cartItems: myCartItem});
+    };
+
+    //Adding item from My Cart
+    addAnItemFromCart = (addCartItem, index) => {
+
+        this.snackBarHandler("Item quantity increased by 1!");
+        const myCartItem = this.state.cartItems;
+        let findItem = myCartItem.itemList[index];
+        if (findItem !== undefined) {
+            findItem.quantity = findItem.quantity + 1;
+            findItem.totalItemPrice = findItem.totalItemPrice + findItem.item.price;
+            myCartItem.totalPrice = myCartItem.totalPrice + findItem.item.price;
+            myCartItem.totalItemCount = myCartItem.totalItemCount + 1;
+        }
+        myCartItem.itemList[index] = findItem;
+        this.setState({cartItems: myCartItem});
+    }
+
+    // Removing item from cart
+    removeAnItemFromCart = (removeCartItem, index) => {
+        const myCartItem = this.state.cartItems;
+        // Match item based on index
+        let findItem = myCartItem.itemList[index];
+        // Update matched item based on index
+        findItem.quantity = findItem.quantity - 1;
+        findItem.totalItemPrice = findItem.totalItemPrice - findItem.item.price;
+        myCartItem.totalPrice = myCartItem.totalPrice - findItem.item.price;
+        myCartItem.totalItemCount = myCartItem.totalItemCount - 1;
+
+        // Remove that item from cart - if the  quantity goes to or less than 0
+        if (findItem.quantity <= 0) {
+            myCartItem.itemList.splice(index, 1);
+            this.snackBarHandler("Item removed from cart!");
+        } else {
+            myCartItem.itemList[index] = findItem;
+            this.snackBarHandler("Item quantity decreased by 1!");
+        }
+        this.setState({cartItems: myCartItem});
     };
 
     //SnackBar handler both open and close function
     snackBarHandler = (message) => {
-        this.setState({ snackBarOpen: false });
-        this.setState({ snackBarMessage: message });
-        this.setState({ snackBarOpen: true });
+        this.setState({snackBarOpen: false});
+        this.setState({snackBarMessage: message});
+        this.setState({snackBarOpen: true});
+    };
+
+    //Checkout button
+    //Passess the selected items and restaurant details to Checkout page
+    checkOutCart = (e) => {
+        const myCartItem = this.state.cartItems;
+        if (myCartItem.itemList.length <= 0) {
+            this.snackBarHandler("Please add an item to your cart!");
+            return;
+        } else {
+            // if (sessionStorage.getItem("foodapptoken") === null) {
+            //     this.snackBarHandler("Please login first!");
+            //     return;
+            // } else {
+            sessionStorage.setItem(
+                "restaurantDetails",
+                JSON.stringify(this.state.data)
+            );
+            //Redirecting to Checkout page
+            this.props.history.push({
+                pathname: "/checkout",
+                state: {
+                    chcartItems: this.state.cartItems,
+                    totalCartItemsValue: this.state.cartItems.totalPrice,
+                },
+            });
+        //}
+    }
     };
 
     //Fetch Restaurant details by Calling GET api call  '/restaurant/{restaurant_id}'
@@ -143,15 +209,15 @@ class Details extends Component {
                 {/*Main Details Section*/}
                 <div className={"details-container"}>
 
-                    <div className={"restaurant-info"}>
+                    <div className={"details-flex"}>
 
                         {/*Image of Restaurant*/}
-                        <div>
+                        <div className={"detail-image"}>
                             <img src={this.state.data.photo_URL} style={{width: 300, height: 250}}/>
                         </div>
 
                         {/*Restaurant Info*/}
-                        <div className={"details"}>
+                        <div className={"details-content"}>
 
                             <div>
                                 <Typography variant={"h4"} component={"h4"}>
@@ -160,9 +226,12 @@ class Details extends Component {
                             </div>
 
                             {/*Locality*/}
-                            <Typography style={{textTransform: "uppercase"}}>
-                                {this.state.locality}
-                            </Typography>
+                            <div className={"location"}>
+                                <Typography style={{textTransform: "uppercase"}}>
+                                    {this.state.locality}
+                                </Typography>
+                            </div>
+
 
                             {/*Categories*/}
                             <div>
@@ -181,7 +250,7 @@ class Details extends Component {
                             </div>
 
                             {/*Rating info*/}
-                            <div style={{display: "flex", justifyContent: "space-between"}}>
+                            <div style={{display:"flex", justifyContent:"space-between"}}>
                                 <div>
                                     <div style={{display: "flex"}}>
                                         <FontAwesomeIcon icon={faStar}
@@ -191,7 +260,7 @@ class Details extends Component {
                                         </Typography>
 
                                     </div>
-                                    <Typography style={{marginRight: 5, marginTop: 5}}>
+                                    <Typography className={"grey-text-2"}>
                                         AVERAGE RATING BY
                                         <div>
                                             {this.state.data.number_customers_rated} CUSTOMERS
@@ -212,7 +281,7 @@ class Details extends Component {
                                         </Typography>
 
                                     </div>
-                                    <Typography style={{marginRight: 5, marginTop: 5}}>
+                                    <Typography className={"grey-text-2"}>
                                         AVERAGE COST FOR
                                         <div>
                                             TWO PEOPLE
@@ -319,7 +388,7 @@ class Details extends Component {
                                                 <Grid container>
                                                     <Grid item xs justifyContent={"center"} style={{minWidth: "45%"}}>
                                                         <div>
-                                                            <FontAwesomeIcon icon={faCircle}
+                                                            <FontAwesomeIcon icon={faStopCircle}
                                                                              style={itemList.item.item_type === "NON_VEG"?{color: 'red', padding: 2}:{color: 'green', padding: 2}}/>
                                                             <Typography className={"item-name"}> {itemList.item.item_name}</Typography>
                                                         </div>
@@ -328,16 +397,24 @@ class Details extends Component {
                                                         <div style={{display:"flex"}}>
                                                             <Typography >
                                                                 <SvgIcon className={"plus-btn"} >
-                                                                    <Remove/>
+                                                                    <Remove onClick={this.removeAnItemFromCart.bind(
+                                                                        this,
+                                                                        itemList,
+                                                                        index
+                                                                    )}/>
                                                                 </SvgIcon>
                                                             </Typography>
 
-                                                            <Typography style={{paddingLeft:"10px",fontSize:"20px"}} variant={"caption"}>
+                                                            <Typography style={{paddingLeft:"10px",fontSize:"15px"}} variant={"caption"}>
                                                                 {itemList.quantity}
                                                             </Typography>
                                                             <Typography >
-                                                                <SvgIcon className={"plus-btn"} >
-                                                                    <Add/>
+                                                                <SvgIcon className={"plus-btn"}>
+                                                                    <Add  onClick={this.addAnItemFromCart.bind(
+                                                                        this,
+                                                                        itemList,
+                                                                        index
+                                                                    )}/>
                                                                 </SvgIcon>
                                                             </Typography>
                                                         </div>
@@ -384,7 +461,7 @@ class Details extends Component {
                                 </div>
 
                                 <Button color={"primary"} style={{marginLeft:"30px", width:"85%"}}
-                                        variant="contained">CHECKOUT</Button>
+                                        variant="contained" onClick={this.checkOutCart.bind(this)}>CHECKOUT</Button>
 
                             </CardContent>
                         </Card>
@@ -393,6 +470,21 @@ class Details extends Component {
                     {/*End of Cart Section*/}
 
                 </div>
+
+                <Snackbar
+                    key={"snack"}
+                    anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+                    autoHideDuration={3000}
+                    open={this.state.snackBarOpen}
+                    onClose={() => this.setState({ snackBarOpen: false })}
+                    message={<span id="message-id">{this.state.snackBarMessage}</span>}
+                    action={
+                        <IconButton color="inherit">
+                            <CloseIcon />
+                        </IconButton>
+                    }
+                />
+
 
             </div>
 

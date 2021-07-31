@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import Home from "./screens/Home/Home";
 import Details from "./screens/Details/Details";
+import Checkout from "./screens/checkout/Checkout";
 
 class ApplicationRouter extends Component{
 
@@ -16,7 +17,7 @@ class ApplicationRouter extends Component{
                     <Route exact path="/restaurant/:id" render={(props) => <Details  />} />
 
                     {/* checkout */}
-                    {/*<Route exact path="/checkout" render={(props) => <Checkout />} />*/}
+                    <Route exact path="/checkout" render={(props) => <Checkout />} />
                 </div>
             </Router>
         </React.Fragment>;
