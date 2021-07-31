@@ -120,6 +120,7 @@ class Header extends Component{
                             <SearchIcon className="search-icon" />
                             </InputAdornment>
                             }
+                               placeholder={"Search By Restaurant Name"}
                         />
                     </FormControl>
                     <div className="header-btn">
