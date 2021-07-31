@@ -76,7 +76,7 @@ class Home extends Component {
                             this.state.data.map(function (obj, index) {
                                 return (
                                     <Col sm={6} lg={3} key={obj.id} style={{marginBottom: 30}}>
-                                        <Card>
+                                        <Card className={"details-card"}>
                                             <Link to={"/restaurant/" + obj.id} style={{ color: "#000000", textDecoration: "none" }}>
                                             <CardActionArea>
                                                 <CardMedia
