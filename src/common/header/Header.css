@@ -28,7 +28,8 @@
     border-bottom-color: #fff !important;
 }
 .header-btn{
-    float: right;    
+    float: right;
+    margin-right: 25px;
 }
 .modal-tabs{
     margin: 20px;
@@ -42,3 +43,9 @@
 .red{
    color: red;
 }
+
+.loggedInProfile{
+    display: flex;
+    color: white;
+}
+
