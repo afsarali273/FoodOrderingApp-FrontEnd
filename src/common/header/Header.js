@@ -212,7 +212,6 @@ class Header extends Component {
 
     render() {
 
-        console.log(" state : " + this.state.loggedIn);
         return (
             <div>
                 <header className="app-header">
@@ -259,10 +258,6 @@ class Header extends Component {
                                                     <Divider variant="middle"/>
                                                 </MenuItem>
                                                 : null
-                                        }
-                                        {
-                                            this.props.showMyAccount ?
-                                                <Divider variant="middle"/> : null
                                         }
                                         <MenuItem
                                             onClick={this.logoutClickHandler}><Typography>Logout</Typography>
