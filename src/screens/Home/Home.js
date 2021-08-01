@@ -29,7 +29,8 @@ class Home extends Component {
         super(props);
         this.state = {
             data: [],
-            template: []
+            template: [],
+            loggedIn: sessionStorage.getItem("access-token") == null ? false : true
         }
     }
 
@@ -69,7 +70,10 @@ class Home extends Component {
         const {classes} = this.props;
         return (
             <div>
-                <div><Header/></div>
+                <div>
+                    <Header {...this.props} loggedIn={true} showMyAccount={true}
+                                showSearch={true} handleChange={this.handleChange}/>
+                </div>
                 <Grid container spacing={2}>
                     <Row className={classes.columns}>
                         {
